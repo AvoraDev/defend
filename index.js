@@ -307,7 +307,13 @@ function gameOver() {
 }
 
 function pause(end) {
-   if (pauseMenu.style.display === "none") {
+   if (end !== undefined) { //prevents player from setting score if they quit to main menu
+      pauseMenu.style.display = "none";
+      cancelAnimationFrame(animateId);
+      clearInterval(round.increase);
+      clearInterval(enemySpawnId);
+      score = 0;
+   } else if (pauseMenu.style.display === "none") {
       pauseMenu.style.display = "flex";
       cancelAnimationFrame(animateId);
       clearInterval(round.increase);
@@ -319,14 +325,6 @@ function pause(end) {
          round.begin();
          spawnEnemies();
       }, 0);
-   }
-   
-   if (end !== undefined) { //prevents player from setting score if they quit to main menu
-      pauseMenu.style.display = "none";
-      cancelAnimationFrame(animateId);
-      clearInterval(round.increase);
-      clearInterval(enemySpawnId);
-      score = 0;
    }
 }
 
@@ -475,8 +473,13 @@ addEventListener("keydown", (event) => {
       }
    } else if (event.code === "KeyP") {
       pause();
-      
-   //debug shortcuts
+   } else if (event.code === "Escape") {
+      if (pauseMenu.style.display === "flex") {
+         pause("quit");
+         mainMenu.style.display = "flex";
+      } else if (restartMenu.style.display === "flex") {
+         mainMenu.style.display = "flex";
+      }
    } else if (event.code === "AltRight") {
       if (debugMenu.style.display === "none") {
          debugMenu.style.display = "flex";
