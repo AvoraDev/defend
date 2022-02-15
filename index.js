@@ -22,14 +22,19 @@ canvas.height = window.innerHeight;
 //get html elements
 //main menu
 const mainMenu = document.querySelector("#mainMenu");
+const howToMenu = document.querySelector("#howToMenu");
 const cannonMenu = document.querySelector("#cannonMenu");
-cannonMenu.style.display = "none";
 const feedbackMenu = document.querySelector("#feedbackMenu");
-feedbackMenu.style.display = "none";
 const creditsMenu = document.querySelector("#creditsMenu");
+howToMenu.style.display = "none";
+cannonMenu.style.display = "none";
+feedbackMenu.style.display = "none";
 creditsMenu.style.display = "none";
 
-//restart menu (WIP)
+//pause menu
+const pauseMenu = document.querySelector("#pauseMenu");
+
+//restart menu
 const restartMenu = document.querySelector("#restartMenu");
 const bigScoreEl = document.querySelector("#bigScoreEl");
 
@@ -261,8 +266,9 @@ function init() {
    ctx.fillStyle = "rgb(0,0,0)";
    ctx.fillRect(0,0,canvas.width,canvas.height);
    
-   //hides main and restart menu
+   //hides main, pause, and restart menu
    mainMenu.style.display = "none";
+   pauseMenu.style.display = "none";
    restartMenu.style.display = "none";
    
    //clears all object arrays
@@ -275,6 +281,7 @@ function init() {
    scoreEl.innerHTML = score;
    player.info.hp.currently = player.info.hp.total;
    hpCount.innerHTML = `${player.info.hp.currently}/${player.info.hp.total}`;
+   hpCount.style.color = "white";
    roundCount.innerHTML = 1;
    
    gui.style.display = "flex";
@@ -284,7 +291,7 @@ function init() {
       animate();
       round.begin();
       spawnEnemies();
-   },0);
+   }, 0);
 }
 
 function gameOver() {
@@ -297,6 +304,28 @@ function gameOver() {
    gui.style.display = "none";
    restartMenu.style.display = "flex";
    bigScoreEl.innerHTML = score.toLocaleString();
+}
+
+function pause(end) {
+   if (end !== undefined) { //prevents player from setting score if they quit to main menu
+      pauseMenu.style.display = "none";
+      cancelAnimationFrame(animateId);
+      clearInterval(round.increase);
+      clearInterval(enemySpawnId);
+      score = 0;
+   } else if (pauseMenu.style.display === "none") {
+      pauseMenu.style.display = "flex";
+      cancelAnimationFrame(animateId);
+      clearInterval(round.increase);
+      clearInterval(enemySpawnId);
+   } else {
+      pauseMenu.style.display = "none";
+      setTimeout(() => {
+         animate();
+         round.begin();
+         spawnEnemies();
+      }, 0);
+   }
 }
 
 //spawns and centers player
@@ -436,12 +465,21 @@ addEventListener("resize", () => {
 
 //key shortcuts
 addEventListener("keydown", (event) => {
-   if (event.code === "Enter" && restartMenu.style.display !== "none") {
-      init();
+   if (event.code === "Enter" && (restartMenu.style.display === "flex" || pauseMenu.style.display === "flex")) {
+      if (restartMenu.style.display === "flex") {
+         init();
+      } else {
+         pause();
+      }
+   } else if (event.code === "KeyP") {
+      pause();
    } else if (event.code === "Escape") {
-      gameOver();
-      
-   //debug shortcuts
+      if (pauseMenu.style.display === "flex") {
+         pause("quit");
+         mainMenu.style.display = "flex";
+      } else if (restartMenu.style.display === "flex") {
+         mainMenu.style.display = "flex";
+      }
    } else if (event.code === "AltRight") {
       if (debugMenu.style.display === "none") {
          debugMenu.style.display = "flex";
