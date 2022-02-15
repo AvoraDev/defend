@@ -8,14 +8,23 @@
    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
    <link href="./style.css" rel="stylesheet">
 </head>
-<body> <!--most(essentially all) code was made by following this video https://www.youtube.com/watch?v=eI9idPTT0c4-->
+<body>
+   <!--pause menu-->
+   <div class="fixed flex inset-0 items-center justify-center" id="pauseMenu">
+      <div class="bg-white max-w-md w-full p-6 text-center">
+         <p class="text-2xl font-bold select-none">Paused</p> <br>
+         <button class="bg-blue-500 text-white w-full py-3 rounded-full text-sm select-none" onclick="pause()">Continue</button>
+         <p class="text-xs text-blue-400 hover:text-blue-600 mt-4 select-none" onclick="pause('quit'); mainMenu.style.display = 'flex'">Main Menu</p>
+      </div>
+   </div>
+   
    <!--restart menu-->
    <div class="fixed flex inset-0 items-center justify-center" id="restartMenu">
       <div class="bg-white max-w-md w-full p-6 text-center">
          <h1 class="text-4xl font-bold select-none" id="bigScoreEl">0</h1>
          <p class="text-sm text-grey-600 mb-4 select-none">Points</p>
          <div>
-            <button class="bg-blue-500 text-white w-full py-3 rounded-full text-sm select-none" onclick="init()" id="restartBtn">Restart</button>
+            <button class="bg-blue-500 text-white w-full py-3 rounded-full text-sm select-none" onclick="init()">Restart</button>
             <p class="text-xs text-blue-400 hover:text-blue-600 mt-4 select-none" onclick="mainMenu.style.display = 'flex'">Main Menu</p>
          </div>
       </div>
@@ -51,6 +60,7 @@
          <p class="text-2xl font-bold">Defend! (Alpha)</p>
          <br>
          <p class="hover:text-blue-600" onclick="init()">Start Game</p> <br>
+         <p class="hover:text-blue-600" onclick="howToMenu.style.display = 'flex'">How to Play</p> <br>
          <p class="hover:text-blue-600" onclick="cannonMenu.style.display = 'flex'">Customize Cannon (WIP)</p> <br>
          <p class="hover:text-blue-600" onclick="feedbackMenu.style.display = 'flex'">Report Bugs/Give Feedback</p> <br>
          <p class="hover:text-blue-600" onclick="creditsMenu.style.display = 'flex'">Credits (WIP)</p>
@@ -59,36 +69,47 @@
       <!--game version-->
       <div class="fixed flex text-white select-none p-2" style="bottom: 0; right: 0; width: 100%">
          <div>
-            <p>v0.1.0-alpha</p>
+            <p>v0.2.0-alpha</p>
          </div>
       </div>
-   </div>
-   
-   <!--customize cannon menu-->
-   <div class="fixed flex w-full h-full bg-black items-center justify-center" id="cannonMenu">
-      <div class="text-center text-white select-none">
-         <p>&lt;blank&gt;</p> <br>
-         <p class="hover:text-blue-600" onclick="cannonMenu.style.display = 'none'">Go Back</p>
-      </div>
-   </div>
-   
-   <!--feedback menu-->
-   <div class="fixed flex inset-0 items-center justify-center" id="feedbackMenu">
-      <div class="bg-white p-6 text-center">
-         <!--google form-->
-         <div style="border: 3px solid rgb(138, 184, 227)">
-            <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfwDs-bCk953j_ukWO2OQlu2w0gR6vx4GazTmUJJzue8pCkg/viewform?embedded=true" width="640" height="671" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+      
+      <!--how to play menu-->
+      <div class="fixed flex w-full h-full bg-black items-center justify-center" id="howToMenu">
+         <div class="text-center text-white select-none">
+            <p class="text-2xl font-bold">How to Play</p> <br>
+            <p class="font-bold">Survive as long as you can!<br>Shoot enemies and try to get a high score!</p> <br>
+            <p><span class="text-yellow-400 font-bold">Click</span> to shoot</p> <br>
+            <p><span class="text-yellow-400 font-bold">'P'</span> to pause</p> <br>
+            <p class="hover:text-blue-600" onclick="howToMenu.style.display = 'none'">Go Back</p>
          </div>
-         <p class="text-xs text-blue-400 hover:text-blue-600 mt-4 select-none" onclick="feedbackMenu.style.display = 'none'">Go Back</p>
       </div>
-   </div>
-   
-   <!--credits menu-->
-   <div class="fixed flex w-full h-full bg-black items-center justify-center" id="creditsMenu">
-      <div class="text-center text-white select-none">
-         <p>Chris Courses (not affiliated)</p> <br>
-         <p>Alex Villalobos</p> <br>
-         <p class="hover:text-blue-600" onclick="creditsMenu.style.display = 'none'">Go Back</p>
+      
+      <!--customize cannon menu-->
+      <div class="fixed flex w-full h-full bg-black items-center justify-center" id="cannonMenu">
+         <div class="text-center text-white select-none">
+            <p>&lt;blank&gt;</p> <br>
+            <p class="hover:text-blue-600" onclick="cannonMenu.style.display = 'none'">Go Back</p>
+         </div>
+      </div>
+      
+      <!--feedback menu-->
+      <div class="fixed flex inset-0 items-center justify-center" id="feedbackMenu">
+         <div class="bg-white p-6 text-center">
+            <!--google form-->
+            <div style="border: 3px solid rgb(138, 184, 227)">
+               <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfwDs-bCk953j_ukWO2OQlu2w0gR6vx4GazTmUJJzue8pCkg/viewform?embedded=true" width="640" height="671" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            </div>
+            <p class="text-xs text-blue-400 hover:text-blue-600 mt-4 select-none" onclick="feedbackMenu.style.display = 'none'">Go Back</p>
+         </div>
+      </div>
+      
+      <!--credits menu-->
+      <div class="fixed flex w-full h-full bg-black items-center justify-center" id="creditsMenu">
+         <div class="text-center text-white select-none">
+            <p>Chris Courses (not affiliated)</p> <br>
+            <p>Alex Villalobos</p> <br>
+            <p class="hover:text-blue-600" onclick="creditsMenu.style.display = 'none'">Go Back</p>
+         </div>
       </div>
    </div>
    
