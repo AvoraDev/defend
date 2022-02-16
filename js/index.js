@@ -36,10 +36,11 @@ const pauseMenu = document.querySelector("#pauseMenu");
 
 //restart menu
 const restartMenu = document.querySelector("#restartMenu");
-const bigScoreEl = document.querySelector("#bigScoreEl");
+const scoreCountFinal = document.querySelector("#scoreCountFinal");
+const roundCountFinal = document.querySelector("#roundCountFinal");
 
 //gui
-const scoreEl = document.querySelector("#scoreEl");
+const scoreCount = document.querySelector("#scoreCount");
 const bulletCount = document.querySelector("#bulletCount");
 const roundCount = document.querySelector("#roundCount");
 const hpCount = document.querySelector("#hpCount");
@@ -50,6 +51,7 @@ gui.style.display = "none";
 const debugMenu = document.querySelector("#debugMenu");
 const projectileArr = document.querySelector("#projectileArr");
 const enemyArr = document.querySelector("#enemyArr");
+const roundInfo = document.querySelector("#roundInfo");
 const playerInfo = document.querySelector("#playerInfo");
 const cannonObj = document.querySelector("#cannon");
 debugMenu.style.display = "none";
@@ -63,12 +65,14 @@ let particles = [];
 //set rounds
 const round = {
   increase: 0,
-  spawnRate: 2000,
+  spawnRate: {initial: 2000, currently: 0},
   counter: 1,
-  begin: function() { //round test
+  begin: function() {
+      this.spawnRate.currently = this.spawnRate.initial;
+      this.counter = 1;
       this.increase = setInterval(() => {
-         if (this.spawnRate !== 0 && (this.spawnRate * 0.95) !== 0) {
-            this.spawnRate *= 0.95;
+         if (this.spawnRate.currently !== 0 && (this.spawnRate.currently * 0.95) !== 0) {
+            this.spawnRate.currently *= 0.95;
             clearInterval(enemySpawnId);
             spawnEnemies();
             
@@ -76,6 +80,7 @@ const round = {
             roundCount.innerHTML = this.counter;
          } else {
             clearInterval(this.increase);
+            roundCount.innerHTML = `${this.counter} (Max)`;
          }
       }, 5000); //new round every n milliseconds
    }
@@ -114,8 +119,8 @@ function spawnEnemies() {
       };
       
       //add enemy to array
-      enemies.push(new Enemy(undefined, x, y, radius, color, velocity));
-   }, round.spawnRate); //enemy spawn frequency
+      enemies.push(new Enemy(undefined, x, y, radius, color, velocity)); //undefined is enemyIndex
+   }, round.spawnRate.currently); //enemy spawn frequency
 }
 
 //animation (gameplay loop?)
@@ -222,7 +227,7 @@ function animate() {
             if (enemy.radius - 10 > 5) {
                //add 100 points when hit isn't fatal
                score += 100;
-               scoreEl.innerHTML = score.toLocaleString();
+               scoreCount.innerHTML = score.toLocaleString();
                
                //transition to smaller size when hit
                gsap.to(enemy, {
@@ -233,7 +238,7 @@ function animate() {
             } else {
                //adds 250 points when hit is fatal
                score += 250;
-               scoreEl.innerHTML = score.toLocaleString();
+               scoreCount.innerHTML = score.toLocaleString();
                
                enemies.splice(index, 1);
                projectiles.splice(projectileIndex, 1);
@@ -243,21 +248,28 @@ function animate() {
    });
    
    //debug menu
-   projectileArr.innerHTML = `projectiles: [${projectiles.length}], ${(projectiles.length / player.info.volley).toFixed(2)} volley(s)`;
-   enemyArr.innerHTML = `enemies: [${enemies.length}]: enabled: ${enemySpawnId !== undefined} (toggle with left ctrl)`;
-   playerInfo.innerHTML = `player: 
-      [wait: ${player.info.wait}], 
-      [projectileRadius: ${player.info.projectileRadius}], 
-      [projectileColor: {lead: ${player.info.projectileColor.lead}, follower: ${player.info.projectileColor.follower}}], 
-      [volley: ${player.info.volley}], 
-      [max: ${player.info.max}], 
-      [cooldown: {wait: ${player.info.cooldown.wait}, enabled: ${player.info.cooldown.enabled}}]`;
+   projectileArr.innerHTML = `projectiles: <br>
+      [${projectiles.length}]: ${(projectiles.length / player.info.volley).toFixed(2)} volley(s) <br>`;
+   enemyArr.innerHTML = `enemies: <br>
+      [${enemies.length}]: enabled: ${enemySpawnId !== undefined} (toggle with left ctrl) <br>`;
+   roundInfo.innerHTML = `round: <br>
+      [counter: ${round.counter}] <br>
+      [increase: ${round.increase}] <br>
+      [spawnRate: {inital: ${round.spawnRate.initial}, currently: ${round.spawnRate.currently}}] <br>`;
+   playerInfo.innerHTML = `player: <br>
+      [hp: {total: ${player.info.hp.total}, currently: ${player.info.hp.currently}}] <br>
+      [wait: ${player.info.wait}] <br>
+      [projectileRadius: ${player.info.projectileRadius}] <br>
+      [projectileColor: {lead: ${player.info.projectileColor.lead}, follower: ${player.info.projectileColor.follower}}] <br>
+      [volley: ${player.info.volley}] <br>
+      [max: ${player.info.max}] <br>
+      [cooldown: {wait: ${player.info.cooldown.wait}, enabled: ${player.info.cooldown.enabled}}] <br>`;
    
-   cannonObj.innerHTML = `cannon: 
-      [radius: ${cannon.radius}], 
-      [color: ${cannon.color}], 
-      [x: ${cannon.x}], 
-      [y: ${cannon.y}]`;
+   cannonObj.innerHTML = `cannon: <br>
+      [radius: ${cannon.radius}] <br>
+      [color: ${cannon.color}] <br>
+      [x: ${cannon.x}] <br>
+      [y: ${cannon.y}] <br>`;
 }
 
 //initialization function
@@ -276,14 +288,19 @@ function init() {
    enemies = [];
    particles = [];
    
-   //resets score and hp, enables gui
+   //resets score
    score = 0;
-   scoreEl.innerHTML = score;
+   scoreCount.innerHTML = score;
+   
+   //resets round
+   roundCount.innerHTML = 1;
+   
+   //resets hp
    player.info.hp.currently = player.info.hp.total;
    hpCount.innerHTML = `${player.info.hp.currently}/${player.info.hp.total}`;
    hpCount.style.color = "white";
-   roundCount.innerHTML = 1;
    
+   //unhides gui
    gui.style.display = "flex";
    
    //starts game
@@ -297,13 +314,14 @@ function init() {
 function gameOver() {
    //end game
    cancelAnimationFrame(animateId);
-   clearInterval(round.increase);
    clearInterval(enemySpawnId);
+   clearInterval(round.increase);
    
    //hides gui, unhides start menu and updates score
    gui.style.display = "none";
    restartMenu.style.display = "flex";
-   bigScoreEl.innerHTML = score.toLocaleString();
+   scoreCountFinal.innerHTML = score.toLocaleString();
+   roundCountFinal.innerHTML = round.counter;
 }
 
 function pause(end) {
@@ -358,7 +376,7 @@ const player = new Player(x, y, 20, "white", {
 });
 
 //spawns cannon
-const cannon = new Cannon(x, y, 10, "blue", {});
+const cannon = new Cannon(x, y, 10, "yellow", {});
 
 //cannon movement
 document.addEventListener("mousemove", () => {if (restartMenu.style.display === "none") {cannon.move()}});
@@ -369,7 +387,7 @@ canvas.addEventListener("click", (event) => {
    //only spawns in projectiles if the max amount of projectiles allowed hasn't been reached
    if (projectiles.length / player.info.volley <= player.info.max - 1 && player.info.cooldown.enabled === false) {
       //change cannon color
-      cannon.color = "red";
+      cannon.color = "rgb(255, 0, 80)";
       
       //trigonometry magic
       const angle = Math.atan2(
@@ -443,10 +461,10 @@ canvas.addEventListener("click", (event) => {
       player.info.cooldown.enabled = true;
       setTimeout(() => {
          player.info.cooldown.enabled = false;
-         
-         gsap.to(cannon, {
-            color: "blue"
-         });
+         cannon.color  = "yellow";
+         //gsap.to(cannon, { //try to find out how to make this slower
+         //   color: "yellow"
+         //});
       }, player.info.cooldown.wait);
    }
 });
