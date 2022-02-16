@@ -4,36 +4,46 @@
    <meta charset="UTF-8">
    <title>Defend! (Alpha)</title>
    <link rel="icon" href="./images/favicon.png">
+   <link href="./style.css" rel="stylesheet">
    <!--link to tailwind, a css shorthand library (makes it harder to read, though)-->
    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-   <link href="./style.css" rel="stylesheet">
 </head>
 <body>
    <!--pause menu-->
-   <div class="fixed flex inset-0 items-center justify-center" id="pauseMenu">
-      <div class="bg-white max-w-md w-full p-6 text-center">
-         <p class="text-2xl font-bold select-none">Paused</p> <br>
-         <button class="bg-blue-500 text-white w-full py-3 rounded-full text-sm select-none" onclick="pause()">Continue</button>
-         <p class="text-xs text-blue-400 hover:text-blue-600 mt-4 select-none" onclick="pause('quit'); mainMenu.style.display = 'flex'">Main Menu</p>
+   <div class="gameMenu" id="pauseMenu">
+      <div>
+         <div>
+            <p class="title">Paused</p>
+         </div>
+         <div>
+            <button onclick="pause()">Continue</button>
+            <p class="txtButton text-xs mt-4" onclick="pause('quit'); mainMenu.style.display = 'flex'">Main Menu</p>
+         </div>
       </div>
    </div>
    
    <!--restart menu-->
-   <div class="fixed flex inset-0 items-center justify-center" id="restartMenu">
-      <div class="bg-white max-w-md w-full p-6 text-center">
-         <h1 class="text-4xl font-bold select-none" id="bigScoreEl">0</h1>
-         <p class="text-sm text-grey-600 mb-4 select-none">Points</p>
+   <div class="gameMenu" id="restartMenu">
+      <div>
          <div>
-            <button class="bg-blue-500 text-white w-full py-3 rounded-full text-sm select-none" onclick="init()">Restart</button>
-            <p class="text-xs text-blue-400 hover:text-blue-600 mt-4 select-none" onclick="mainMenu.style.display = 'flex'">Main Menu</p>
+            <div>
+               <p class="title" id="scoreCountFinal">0</p>
+               <p class="text-sm">Points</p> <br>
+               <p class="title" id="roundCountFinal">0</p>
+               <p class="text-sm">Round</p>
+            </div>
+         </div>
+         <div>
+            <button onclick="init()">Restart</button>
+            <p class="txtButton text-xs mt-4" onclick="mainMenu.style.display = 'flex'">Main Menu</p>
          </div>
       </div>
    </div>
    
    <!--gui-->
-   <div class="fixed flex text-white text-sm ml-3 mt-3 px-4 py-1 select-none" style="background-color: rgba(65,65,65,0.45)" id="gui">
+   <div class="gui" id="gui">
       <div>
-         <p>Score: <span id="scoreEl">--</span></p>
+         <p>Score: <span id="scoreCount">--</span></p>
          <p>Round: <span id="roundCount">--</span></p>
          <p>Volleys: <span id="bulletCount">--/--</span></p>
          <p>HP: <span id="hpCount">--/--</span></p>
@@ -41,82 +51,80 @@
    </div>
    
    <!--debug menu-->
-   <div class="fixed flex text-white select-none p-2" style="bottom: 0; right: 0; width: 100%; background-color: rgba(65,65,65,0.45);" id="debugMenu">
+   <div class="debugMenu" id="debugMenu">
       <div>
-         <p id="projectileArr"></p>
-         <br>
-         <p id="enemyArr"></p>
-         <br>
-         <p id="playerInfo"></p>
-         <br>
+         <p id="projectileArr"></p> <br>
+         <p id="enemyArr"></p> <br>
+         <p id="roundInfo"></p> <br>
+         <p id="playerInfo"></p> <br>
          <p id="cannon"></p>
       </div>
    </div>
    
    <!--main menu-->
-   <div class="fixed flex w-full h-full bg-black items-center justify-center" id="mainMenu">
-      <div class="text-center text-white select-none">
+   <div class="generalMenu" id="mainMenu">
+      <div>
          <img src="./images/favicon.png" alt="icon" width="80" height="80" class="mx-auto"> <br>
-         <p class="text-2xl font-bold">Defend! (Alpha)</p>
+         <p class="title">Defend! (Alpha)</p>
          <br>
-         <p class="hover:text-blue-600" onclick="init()">Start Game</p> <br>
-         <p class="hover:text-blue-600" onclick="howToMenu.style.display = 'flex'">How to Play</p> <br>
-         <p class="hover:text-blue-600" onclick="cannonMenu.style.display = 'flex'">Customize Cannon (WIP)</p> <br>
-         <p class="hover:text-blue-600" onclick="feedbackMenu.style.display = 'flex'">Report Bugs/Give Feedback</p> <br>
-         <p class="hover:text-blue-600" onclick="creditsMenu.style.display = 'flex'">Credits</p>
+         <p class="txtButton" onclick="init()">Start Game</p> <br>
+         <p class="txtButton" onclick="howToMenu.style.display = 'flex'">How to Play</p> <br>
+         <p class="txtButton" onclick="cannonMenu.style.display = 'flex'">Customize Cannon (Comming Soon)</p> <br>
+         <p class="txtButton" onclick="feedbackMenu.style.display = 'flex'">Report Bugs/Give Feedback</p> <br>
+         <p class="txtButton" onclick="creditsMenu.style.display = 'flex'">Credits</p>
       </div>
       
       <!--game version-->
-      <div class="fixed flex text-white select-none p-2" style="bottom: 0; right: 0; width: 100%">
+      <div id="gameVersion">
          <div>
             <p>v0.2.0-alpha</p>
          </div>
       </div>
       
       <!--how to play menu-->
-      <div class="fixed flex w-full h-full bg-black items-center justify-center" id="howToMenu">
-         <div class="text-center text-white select-none">
-            <p class="text-2xl font-bold">How to Play</p> <br>
+      <div class="generalMenu" id="howToMenu">
+         <div>
+            <p class="title">How to Play</p> <br>
             <p class="font-bold">Survive as long as you can!<br>Shoot enemies and try to get a high score!</p> <br>
-            <p><span class="text-yellow-400 font-bold">Click</span> to shoot</p> <br>
-            <p><span class="text-yellow-400 font-bold">'P'</span> to pause</p> <br>
-            <p class="hover:text-blue-600" onclick="howToMenu.style.display = 'none'">Go Back</p>
+            <p><span class="font-bold" style="color: rgb(255, 0, 80)">Click</span> to shoot</p> <br>
+            <p><span class="font-bold" style="color: rgb(255, 0, 80)">'P'</span> to pause</p> <br>
+            <p class="txtButton text-sm mt-4" onclick="howToMenu.style.display = 'none'">Go Back</p>
          </div>
       </div>
       
       <!--customize cannon menu-->
-      <div class="fixed flex w-full h-full bg-black items-center justify-center" id="cannonMenu">
-         <div class="text-center text-white select-none">
+      <div class="generalMenu" id="cannonMenu">
+         <div>
             <p>&lt;blank&gt;</p> <br>
-            <p class="hover:text-blue-600" onclick="cannonMenu.style.display = 'none'">Go Back</p>
+            <p class="txtButton text-sm mt-4" onclick="cannonMenu.style.display = 'none'">Go Back</p>
          </div>
       </div>
       
       <!--feedback menu-->
-      <div class="fixed flex inset-0 items-center justify-center" id="feedbackMenu">
-         <div class="bg-white p-6 text-center">
+      <div id="feedbackMenu">
+         <div>
             <!--google form-->
-            <div style="border: 3px solid rgb(138, 184, 227)">
+            <div style="border: 3px solid rgb(255, 0, 80)">
                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfwDs-bCk953j_ukWO2OQlu2w0gR6vx4GazTmUJJzue8pCkg/viewform?embedded=true" width="640" height="671" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
             </div>
-            <p class="text-xs text-blue-400 hover:text-blue-600 mt-4 select-none" onclick="feedbackMenu.style.display = 'none'">Go Back</p>
+            <p class="txtButton text-sm mt-4" onclick="feedbackMenu.style.display = 'none'">Go Back</p>
          </div>
       </div>
       
       <!--credits menu-->
-      <div class="fixed flex w-full h-full bg-black items-center justify-center" id="creditsMenu">
-         <div class="text-center text-white select-none">
-            <p class="text-2xl font-bold">Credits</p> <br>
+      <div class="generalMenu" id="creditsMenu">
+         <div>
+            <p class="title">Credits</p> <br>
             <p class="font-bold">"avrasda"</p>
             <p style="color: rgb(125,125,125)">Developer</p> <br>
-            <p class="font-bold">Special Thanks to Chris Courses and <a class="text-blue-400 hover:text-blue-600" href="https://www.youtube.com/watch?v=eI9idPTT0c4" target="_blank">his video</a></p> <br>
-            <p class="hover:text-blue-600" onclick="creditsMenu.style.display = 'none'">Go Back</p>
+            <p class="font-bold">Special Thanks to Chris Courses and <a class="txtButton" href="https://www.youtube.com/watch?v=eI9idPTT0c4" target="_blank">his video</a></p> <br>
+            <p class="txtButton text-sm mt-4" onclick="creditsMenu.style.display = 'none'">Go Back</p>
          </div>
       </div>
    </div>
    
    <!--splash screen-->
-   <div class="fixed flex w-full h-full bg-black items-center justify-center" id="splashScreen">
+   <div class="generalMenu" id="splashScreen">
       <!--
       <div class="text-center">
          <img src="./favicon.png" alt="icon" width="100" height="100" class="mx-auto">
@@ -131,7 +139,7 @@
    
    <!--link to Green Sock, a JS animation library-->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js" integrity="sha512-H6cPm97FAsgIKmlBA4s774vqoN24V5gSQL4yBTDOY2su2DeXZVhQPxFK4P6GPdnZqM9fg1G3cMv5wD7e6cFLZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   <!--all file links-->
+   <!--all javascript file links-->
    <script src="./js/templates/player.js" type="text/javascript"></script>
    <script src="./js/templates/cannon.js" type="text/javascript"></script>
    <script src="./js/templates/projectile.js" type="text/javascript"></script>
