@@ -1,6 +1,5 @@
 //ideas
 //hold to fire
-//make game rounds
 //change speed based on size; the smaller, the faster
 //upgrades
    //minions
@@ -23,12 +22,14 @@ canvas.height = window.innerHeight;
 //main menu
 const mainMenu = document.querySelector("#mainMenu");
 const howToMenu = document.querySelector("#howToMenu");
-const cannonMenu = document.querySelector("#cannonMenu");
+const customizeMenu = document.querySelector("#customizeMenu");
 const feedbackMenu = document.querySelector("#feedbackMenu");
+const settingsMenu = document.querySelector("#settingsMenu");
 const creditsMenu = document.querySelector("#creditsMenu");
 howToMenu.style.display = "none";
-cannonMenu.style.display = "none";
+customizeMenu.style.display = "none";
 feedbackMenu.style.display = "none";
+settingsMenu.style.display = "none";
 creditsMenu.style.display = "none";
 
 //pause menu
@@ -131,7 +132,7 @@ function animate() {
    animateId = requestAnimationFrame(animate);
    
    //clears canvas every frame in order to redraw everything
-   ctx.fillStyle = "rgb(0, 0, 0, 0.1)";
+   ctx.fillStyle = player.settings.trailing ? "rgba(0, 0, 0, 0.1)" : "rgba(0, 0, 0, 1)";
    ctx.fillRect(0, 0, canvas.width, canvas.height);
    cannon.draw();
    player.draw();
@@ -186,11 +187,11 @@ function animate() {
             enemies.splice(index, 1);
             
             //damage instance
-            player.color = "red";
+            player.color.currently = "red";
             hpCount.style.color = "red";
             setTimeout(() => {
-               gsap.to(player, {
-                  color: "white"
+               gsap.to(player.color, {
+                  currently: player.color.original
                });
                if (player.info.hp.currently !== 1) {
                   gsap.to(hpCount, {
@@ -206,21 +207,23 @@ function animate() {
          //finds distance between projectile and enemy
          const dist2 = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
          
-         //spawns particles when enemy is hit
          if (dist2 - enemy.radius - projectile.radius < 1) {
-            for (let i = 0; i < enemy.radius * 1.5; i++) {
-               particles.push(
-                  new Particle(
-                     projectile.x,
-                     projectile.y,
-                     Math.random() * 2,
-                     enemy.color,
-                     {
-                        x:(Math.random() - 0.5) * (Math.random() * 8),
-                        y:(Math.random() - 0.5) * (Math.random() * 8)
-                     }
-                  )
-               );
+            //spawns particles when enemy is hit
+            if (player.settings.particles) {
+               for (let i = 0; i < enemy.radius * 1.5; i++) {
+                  particles.push(
+                     new Particle(
+                        projectile.x,
+                        projectile.y,
+                        Math.random() * 2,
+                        enemy.color,
+                        {
+                           x:(Math.random() - 0.5) * (Math.random() * 8),
+                           y:(Math.random() - 0.5) * (Math.random() * 8)
+                        }
+                     )
+                  );
+               }
             }
             
             //shrinks/despawns enemy when hit and gives points
@@ -240,8 +243,10 @@ function animate() {
                score += 250;
                scoreCount.innerHTML = score.toLocaleString();
                
-               enemies.splice(index, 1);
-               projectiles.splice(projectileIndex, 1);
+               setTimeout (() => {
+                  enemies.splice(index, 1);
+                  projectiles.splice(projectileIndex, 1);
+               }, 0);
             }
          }
       });
@@ -257,6 +262,7 @@ function animate() {
       [increase: ${round.increase}] <br>
       [spawnRate: {inital: ${round.spawnRate.initial}, currently: ${round.spawnRate.currently}}] <br>`;
    playerInfo.innerHTML = `player: <br>
+      [color: {original: ${player.color.original}, currently: ${player.color.currently}}] <br>
       [hp: {total: ${player.info.hp.total}, currently: ${player.info.hp.currently}}] <br>
       [wait: ${player.info.wait}] <br>
       [projectileRadius: ${player.info.projectileRadius}] <br>
@@ -264,10 +270,9 @@ function animate() {
       [volley: ${player.info.volley}] <br>
       [max: ${player.info.max}] <br>
       [cooldown: {wait: ${player.info.cooldown.wait}, enabled: ${player.info.cooldown.enabled}}] <br>`;
-   
    cannonObj.innerHTML = `cannon: <br>
       [radius: ${cannon.radius}] <br>
-      [color: ${cannon.color}] <br>
+      [color: {original: ${cannon.color.original}, onFire: ${cannon.color.onFire}, currently: ${cannon.color.currently}}] <br>
       [x: ${cannon.x}] <br>
       [y: ${cannon.y}] <br>`;
 }
@@ -349,15 +354,19 @@ function pause(end) {
 //spawns and centers player
 const x = canvas.width / 2;
 const y = canvas.height / 2;
-const player = new Player(x, y, 20, "white", {
+const player = new Player(x, y, 20, {
+   //make sure that both color.original and color.currently are the same
+   original: "white",
+   currently: "white"
+}, { 
    //player hp
    hp: {total: 3, currently: 0},
    
    //time between spawing each extra projectile (in milliseconds)
-   wait: 10,
+   wait: 20,
    
    //projectile size
-   projectileRadius: 5,
+   projectileRadius: 6,
    
    //projectile color
    projectileColor: {
@@ -366,17 +375,26 @@ const player = new Player(x, y, 20, "white", {
    },
    
    //total projectiles spawned per click (~63 is a full circle)
-   volley: 3,
+   volley: 1,
    
    //maximum amount of Projectile groups allowed on screen
-   max: 6,
+   max: 10,
    
    //cooldown between spawn
    cooldown: {wait: 150, enabled: false}
+}, {
+   //player settings
+   trailing: true,
+   particles: true
 });
 
 //spawns cannon
-const cannon = new Cannon(x, y, 10, "yellow", {});
+const cannon = new Cannon(x, y, 10, {
+   //make sure that both color.original and color.currently are the same
+   original: "yellow",
+   onFire: "rgb(255, 0, 80)",
+   currently: "yellow"
+}, {});
 
 //cannon movement
 document.addEventListener("mousemove", () => {if (restartMenu.style.display === "none") {cannon.move()}});
@@ -387,7 +405,7 @@ canvas.addEventListener("click", (event) => {
    //only spawns in projectiles if the max amount of projectiles allowed hasn't been reached
    if (projectiles.length / player.info.volley <= player.info.max - 1 && player.info.cooldown.enabled === false) {
       //change cannon color
-      cannon.color = "rgb(255, 0, 80)";
+      cannon.color.currently = cannon.color.onFire;
       
       //trigonometry magic
       const angle = Math.atan2(
@@ -461,13 +479,94 @@ canvas.addEventListener("click", (event) => {
       player.info.cooldown.enabled = true;
       setTimeout(() => {
          player.info.cooldown.enabled = false;
-         cannon.color  = "yellow";
+         cannon.color.currently  = cannon.color.original;
          //gsap.to(cannon, { //try to find out how to make this slower
          //   color: "yellow"
          //});
       }, player.info.cooldown.wait);
    }
 });
+
+//user stuff
+const cPresets = [
+   //player color presets
+   [["White","white"],["Blue","blue"],["Green","rgb(0, 255, 0)"],["Yellow","yellow"]],
+   //cannon color presets
+   [["Original","yellow","rgb(255, 0, 80)"],["Red/Blue","red","blue"],["Yellow/Purple","yellow","rgb(110, 0, 255)"]],
+   //projectile color presets
+   [["White","white","white"],["White/Red","white","red"],["Yellow/Purple","yellow","rgb(110, 0, 255)"]],
+   //hp presets
+   [3,4,5,10,1],
+   //volley presets
+   [1,3,6,9]
+];
+const cCycle = {
+   player: 0,
+   cannon: 0,
+   projectile: 0,
+   hp: 0,
+   volley: 0
+};
+function toggleSettings(id) {
+   //on/off toggle
+   let temp = document.querySelector(`#${id}`);
+   if (temp.innerHTML === "On") {
+      temp.innerHTML = "Off";
+   } else if (temp.innerHTML === "Off") {
+      temp.innerHTML = "On";
+      
+   //colors and such
+   } else if (id === "playerColorCustomize") {
+      if (cCycle.player < (cPresets[0].length - 1)) {
+         cCycle.player++;
+      } else {
+         cCycle.player = 0;
+      }
+      
+      temp.innerHTML = cPresets[0][cCycle.player][0];
+      player.color.original = cPresets[0][cCycle.player][1];
+      player.color.currently = cPresets[0][cCycle.player][1];
+   } else if (id === "cannonColorCustomize") {
+      if (cCycle.cannon < (cPresets[1].length - 1)) {
+         cCycle.cannon++;
+      } else {
+         cCycle.cannon = 0;
+      }
+      
+      temp.innerHTML = cPresets[1][cCycle.cannon][0];
+      cannon.color.original = cPresets[1][cCycle.cannon][1];
+      cannon.color.currently = cPresets[1][cCycle.cannon][1];
+      cannon.color.onFire = cPresets[1][cCycle.cannon][2];
+   } else if (id === "projectileColorCustomize") {
+      if (cCycle.projectile < (cPresets[2].length - 1)) {
+         cCycle.projectile++;
+      } else {
+         cCycle.projectile = 0;
+      }
+      
+      temp.innerHTML = cPresets[2][cCycle.projectile][0];
+      player.info.projectileColor.lead = cPresets[2][cCycle.projectile][1];
+      player.info.projectileColor.follower = cPresets[2][cCycle.projectile][2];
+   } else if (id === "hpCustomize") {
+      if (cCycle.hp < (cPresets[3].length - 1)) {
+         cCycle.hp++;
+      } else {
+         cCycle.hp = 0;
+      }
+      
+      temp.innerHTML = cPresets[3][cCycle.hp];
+      player.info.hp.total = cPresets[3][cCycle.hp];
+   } else if (id === "volleyCustomize") {
+      if (cCycle.volley < (cPresets[4].length - 1)) {
+         cCycle.volley++;
+      } else {
+         cCycle.volley = 0;
+      }
+      
+      temp.innerHTML = cPresets[4][cCycle.volley];
+      player.info.volley = cPresets[4][cCycle.volley];
+   }
+}
 
 //resize on change
 addEventListener("resize", () => {
@@ -483,8 +582,8 @@ addEventListener("resize", () => {
 
 //key shortcuts
 addEventListener("keydown", (event) => {
-   if (event.code === "Enter" && (restartMenu.style.display === "flex" || pauseMenu.style.display === "flex")) {
-      if (restartMenu.style.display === "flex") {
+   if (event.code === "Enter" && (mainMenu.style.display === "flex" || restartMenu.style.display === "flex" || pauseMenu.style.display === "flex")) {
+      if (mainMenu.style.display === "flex" || restartMenu.style.display === "flex") {
          init();
       } else {
          pause();

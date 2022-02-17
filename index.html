@@ -29,6 +29,7 @@
             <div>
                <p class="title" id="scoreCountFinal">0</p>
                <p class="text-sm">Points</p> <br>
+               
                <p class="title" id="roundCountFinal">0</p>
                <p class="text-sm">Round</p>
             </div>
@@ -44,8 +45,11 @@
    <div class="gui" id="gui">
       <div>
          <p>Score: <span id="scoreCount">--</span></p>
+         
          <p>Round: <span id="roundCount">--</span></p>
+         
          <p>Volleys: <span id="bulletCount">--/--</span></p>
+         
          <p>HP: <span id="hpCount">--/--</span></p>
       </div>
    </div>
@@ -65,19 +69,25 @@
    <div class="generalMenu" id="mainMenu">
       <div>
          <img src="./images/favicon.png" alt="icon" width="80" height="80" class="mx-auto"> <br>
-         <p class="title">Defend! (Alpha)</p>
-         <br>
+         <p class="title">Defend! (Alpha)</p> <br>
+         
          <p class="txtButton" onclick="init()">Start Game</p> <br>
+         
          <p class="txtButton" onclick="howToMenu.style.display = 'flex'">How to Play</p> <br>
-         <p class="txtButton" onclick="cannonMenu.style.display = 'flex'">Customize Cannon (Comming Soon)</p> <br>
+         
+         <p class="txtButton" onclick="customizeMenu.style.display = 'flex'">Customize Game</p> <br>
+         
          <p class="txtButton" onclick="feedbackMenu.style.display = 'flex'">Report Bugs/Give Feedback</p> <br>
+         
+         <p class="txtButton" onclick="settingsMenu.style.display = 'flex'">Settings</p> <br>
+         
          <p class="txtButton" onclick="creditsMenu.style.display = 'flex'">Credits</p>
       </div>
       
       <!--game version-->
       <div id="gameVersion">
          <div>
-            <p>v0.3.0-alpha</p>
+            <p>v0.3.1-alpha</p>
          </div>
       </div>
       
@@ -85,18 +95,38 @@
       <div class="generalMenu" id="howToMenu">
          <div>
             <p class="title">How to Play</p> <br>
+            
             <p class="font-bold">Survive as long as you can!<br>Shoot enemies and try to get a high score!</p> <br>
+            
             <p><span class="font-bold" style="color: rgb(255, 0, 80)">Click</span> to shoot</p> <br>
+            
             <p><span class="font-bold" style="color: rgb(255, 0, 80)">'P'</span> to pause</p> <br>
+            
             <p class="txtButton text-sm mt-4" onclick="howToMenu.style.display = 'none'">Go Back</p>
          </div>
       </div>
       
       <!--customize cannon menu-->
-      <div class="generalMenu" id="cannonMenu">
+      <div class="generalMenu" id="customizeMenu">
          <div>
-            <p>&lt;blank&gt;</p> <br>
-            <p class="txtButton text-sm mt-4" onclick="cannonMenu.style.display = 'none'">Go Back</p>
+            <p class="title">Customize Game</p>
+            
+            <p>Player Color</p>
+            <p class="txtButton" onclick="toggleSettings('playerColorCustomize')" id="playerColorCustomize">White</p> <br>
+            
+            <p>Cannon Color</p>
+            <p class="txtButton" onclick="toggleSettings('cannonColorCustomize')" id="cannonColorCustomize">Yellow</p> <br>
+            
+            <p>Projectile Colors</p>
+            <p class="txtButton" onclick="toggleSettings('projectileColorCustomize')" id="projectileColorCustomize">White/White</p> <br>
+            
+            <p>Hit Points (HP)</p>
+            <p class="txtButton" onclick="toggleSettings('hpCustomize')" id="hpCustomize">3</p> <br>
+            
+            <p>Shots per volley</p>
+            <p class="txtButton" onclick="toggleSettings('volleyCustomize')" id="volleyCustomize">1</p> <br>
+            
+            <p class="txtButton text-sm mt-4" onclick="customizeMenu.style.display = 'none'">Go Back</p>
          </div>
       </div>
       
@@ -111,13 +141,31 @@
          </div>
       </div>
       
+      <!--settings menu-->
+      <div class="generalMenu" id="settingsMenu">
+         <div>
+            <p class="title">Settings</p> <br>
+            
+            <p>Trailing</p>
+            <p class="txtButton" onclick="player.settings.trailing = !player.settings.trailing; toggleSettings('trailingToggle')" id="trailingToggle">On</p> <br>
+            
+            <p>Particles</p>
+            <p class="txtButton" onclick="player.settings.particles = !player.settings.particles; toggleSettings('particlesToggle')" id="particlesToggle">On</p> <br>
+            
+            <p class="txtButton text-sm mt-4" onclick="settingsMenu.style.display = 'none'">Go Back</p>
+         </div>
+      </div>
+      
       <!--credits menu-->
       <div class="generalMenu" id="creditsMenu">
          <div>
             <p class="title">Credits</p> <br>
+            
             <p class="font-bold">"avrasda"</p>
             <p style="color: rgb(125,125,125)">Developer</p> <br>
+            
             <p class="font-bold">Special Thanks to Chris Courses and <a class="txtButton" href="https://www.youtube.com/watch?v=eI9idPTT0c4" target="_blank">his video</a></p> <br>
+            
             <p class="txtButton text-sm mt-4" onclick="creditsMenu.style.display = 'none'">Go Back</p>
          </div>
       </div>
