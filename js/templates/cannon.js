@@ -4,7 +4,7 @@ class Cannon {
       this.x = x;
       this.y = y;
       this.radius = radius;
-      this.color = color;
+      this.color = {original: color.original, onFire: color.onFire, currently: color.currently};
       this.velocity = velocity;
    }
    
@@ -12,7 +12,7 @@ class Cannon {
    draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-      ctx.fillStyle = this.color;
+      ctx.fillStyle = this.color.currently;
       ctx.fill();
    }
    
