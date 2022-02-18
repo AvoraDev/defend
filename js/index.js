@@ -10,6 +10,14 @@
    //machine gun
    //projectiles hit multiple times (no collision)
    //bombs/missles
+//just ignore this
+switch(window.location.protocol) {
+   case 'file:':
+     document.title = "Defend! (LOCAL)";
+     break;
+   default: 
+     console.log("not a local file");
+}
 
 //set canvas
 const canvas = document.querySelector("canvas");
@@ -34,6 +42,7 @@ creditsMenu.style.display = "none";
 
 //pause menu
 const pauseMenu = document.querySelector("#pauseMenu");
+pauseMenu.style.display = "none";
 
 //restart menu
 const restartMenu = document.querySelector("#restartMenu");
@@ -56,6 +65,11 @@ const roundInfo = document.querySelector("#roundInfo");
 const playerInfo = document.querySelector("#playerInfo");
 const cannonObj = document.querySelector("#cannon");
 debugMenu.style.display = "none";
+
+//audio
+let select = new Howl({src: ["./audio/select.mp3"]});
+let shoot = new Howl({src: ["./audio/shoot.mp3"]});
+let hit = new Howl({src: ["./audio/hit.mp3"]});
 
 //everything
 //item arrays
@@ -208,6 +222,9 @@ function animate() {
          const dist2 = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
          
          if (dist2 - enemy.radius - projectile.radius < 1) {
+            //play sound
+            hit.play();
+            
             //spawns particles when enemy is hit
             if (player.settings.particles) {
                for (let i = 0; i < enemy.radius * 1.5; i++) {
@@ -279,6 +296,9 @@ function animate() {
 
 //initialization function
 function init() {
+   //play sound
+   select.play();
+   
    //clears screen
    ctx.fillStyle = "rgb(0,0,0)";
    ctx.fillRect(0,0,canvas.width,canvas.height);
@@ -330,6 +350,9 @@ function gameOver() {
 }
 
 function pause(end) {
+   //play sound
+   select.play();
+   
    if (end !== undefined) { //prevents player from setting score if they quit to main menu
       pauseMenu.style.display = "none";
       cancelAnimationFrame(animateId);
@@ -404,6 +427,9 @@ canvas.addEventListener("click", (event) => {
    //spawn projectiles
    //only spawns in projectiles if the max amount of projectiles allowed hasn't been reached
    if (projectiles.length / player.info.volley <= player.info.max - 1 && player.info.cooldown.enabled === false) {
+      //play sound
+      shoot.play();
+      
       //change cannon color
       cannon.color.currently = cannon.color.onFire;
       
@@ -487,6 +513,19 @@ canvas.addEventListener("click", (event) => {
    }
 });
 
+//select function
+function menuToggle(id) {
+   //play sound
+   select.play();
+   
+   let temp = document.querySelector(`#${id}`);
+   if (temp.style.display === "none") {
+      temp.style.display = "flex";
+   } else {
+      temp.style.display = "none";
+   }
+}
+
 //user stuff
 const cPresets = [
    //player color presets
@@ -508,6 +547,9 @@ const cCycle = {
    volley: 0
 };
 function toggleSettings(id) {
+   //play sound
+   select.play();
+   
    //on/off toggle
    let temp = document.querySelector(`#${id}`);
    if (temp.innerHTML === "On") {
@@ -588,7 +630,7 @@ addEventListener("keydown", (event) => {
       } else {
          pause();
       }
-   } else if (event.code === "KeyP") {
+   } else if (event.code === "KeyP" && mainMenu.style.display === "none") {
       pause();
    } else if (event.code === "Escape") {
       if (pauseMenu.style.display === "flex") {

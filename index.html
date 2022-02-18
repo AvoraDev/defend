@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
    <meta charset="UTF-8">
-   <title>Defend! (Alpha)</title>
+   <title>Defend! (Beta)</title>
    <link rel="icon" href="./images/favicon.png">
    <link href="./style.css" rel="stylesheet">
    <!--link to tailwind, a css shorthand library (makes it harder to read, though)-->
@@ -17,7 +17,7 @@
          </div>
          <div>
             <button onclick="pause()">Continue</button>
-            <p class="txtButton text-xs mt-4" onclick="pause('quit'); mainMenu.style.display = 'flex'">Main Menu</p>
+            <p class="txtButton text-xs mt-4" onclick="pause('quit'); menuToggle('mainMenu')">Main Menu</p>
          </div>
       </div>
    </div>
@@ -69,25 +69,25 @@
    <div class="generalMenu" id="mainMenu">
       <div>
          <img src="./images/favicon.png" alt="icon" width="80" height="80" class="mx-auto"> <br>
-         <p class="title">Defend! (Alpha)</p> <br>
+         <p class="title">Defend! (Beta)</p> <br>
          
          <p class="txtButton" onclick="init()">Start Game</p> <br>
          
-         <p class="txtButton" onclick="howToMenu.style.display = 'flex'">How to Play</p> <br>
+         <p class="txtButton" onclick="menuToggle('howToMenu')">How to Play</p> <br>
          
-         <p class="txtButton" onclick="customizeMenu.style.display = 'flex'">Customize Game</p> <br>
+         <p class="txtButton" onclick="menuToggle('customizeMenu')">Customize Game</p> <br>
          
-         <p class="txtButton" onclick="feedbackMenu.style.display = 'flex'">Report Bugs/Give Feedback</p> <br>
+         <p class="txtButton" onclick="menuToggle('feedbackMenu')">Report Bugs/Give Feedback</p> <br>
          
-         <p class="txtButton" onclick="settingsMenu.style.display = 'flex'">Settings</p> <br>
+         <p class="txtButton" onclick="menuToggle('settingsMenu')">Settings</p> <br>
          
-         <p class="txtButton" onclick="creditsMenu.style.display = 'flex'">Credits</p>
+         <p class="txtButton" onclick="menuToggle('creditsMenu')">Credits</p>
       </div>
       
       <!--game version-->
       <div id="gameVersion">
          <div>
-            <p>v0.3.1-alpha</p>
+            <p>v0.3.2-beta</p>
          </div>
       </div>
       
@@ -102,7 +102,7 @@
             
             <p><span class="font-bold" style="color: rgb(255, 0, 80)">'P'</span> to pause</p> <br>
             
-            <p class="txtButton text-sm mt-4" onclick="howToMenu.style.display = 'none'">Go Back</p>
+            <p class="txtButton text-sm mt-4" onclick="menuToggle('howToMenu')">Go Back</p>
          </div>
       </div>
       
@@ -126,7 +126,7 @@
             <p>Shots per volley</p>
             <p class="txtButton" onclick="toggleSettings('volleyCustomize')" id="volleyCustomize">1</p> <br>
             
-            <p class="txtButton text-sm mt-4" onclick="customizeMenu.style.display = 'none'">Go Back</p>
+            <p class="txtButton text-sm mt-4" onclick="menuToggle('customizeMenu')">Go Back</p>
          </div>
       </div>
       
@@ -135,9 +135,11 @@
          <div>
             <!--google form-->
             <div style="border: 3px solid rgb(255, 0, 80)">
-               <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfwDs-bCk953j_ukWO2OQlu2w0gR6vx4GazTmUJJzue8pCkg/viewform?embedded=true" width="640" height="671" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+               <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScfwDs-bCk953j_ukWO2OQlu2w0gR6vx4GazTmUJJzue8pCkg/viewform?embedded=true" 
+               width="640" height="671" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
             </div>
-            <p class="txtButton text-sm mt-4" onclick="feedbackMenu.style.display = 'none'">Go Back</p>
+            
+            <p class="txtButton text-sm mt-4" onclick="menuToggle('feedbackMenu')">Go Back</p>
          </div>
       </div>
       
@@ -152,7 +154,7 @@
             <p>Particles</p>
             <p class="txtButton" onclick="player.settings.particles = !player.settings.particles; toggleSettings('particlesToggle')" id="particlesToggle">On</p> <br>
             
-            <p class="txtButton text-sm mt-4" onclick="settingsMenu.style.display = 'none'">Go Back</p>
+            <p class="txtButton text-sm mt-4" onclick="menuToggle('settingsMenu')">Go Back</p>
          </div>
       </div>
       
@@ -166,7 +168,7 @@
             
             <p class="font-bold">Special Thanks to Chris Courses and <a class="txtButton" href="https://www.youtube.com/watch?v=eI9idPTT0c4" target="_blank">his video</a></p> <br>
             
-            <p class="txtButton text-sm mt-4" onclick="creditsMenu.style.display = 'none'">Go Back</p>
+            <p class="txtButton text-sm mt-4" onclick="menuToggle('creditsMenu')">Go Back</p>
          </div>
       </div>
    </div>
@@ -193,6 +195,7 @@
    <script src="./js/templates/projectile.js" type="text/javascript"></script>
    <script src="./js/templates/enemy.js" type="text/javascript"></script>
    <script src="./js/templates/particle.js" type="text/javascript"></script>
+   <script src="./howler_js/dist/howler.js"></script>
    <script src="./js/index.js" type="text/javascript"></script>
 </body>
 </html>
