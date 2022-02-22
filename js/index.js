@@ -81,7 +81,7 @@ let particles = [];
 const round = {
   increase: 0,
   spawnRate: {initial: 2000, currently: 0},
-  multiplier: 0.85,
+  multiplier: 0.90,
   counter: 1,
   begin: function() {
       this.spawnRate.currently = this.spawnRate.initial;
