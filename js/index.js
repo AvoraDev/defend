@@ -360,11 +360,13 @@ function pause(end) {
       clearInterval(enemySpawnId);
       score = 0;
    } else if (pauseMenu.style.display === "none") {
+      gui.style.display = "none";
       pauseMenu.style.display = "flex";
       cancelAnimationFrame(animateId);
       clearInterval(round.increase);
       clearInterval(enemySpawnId);
    } else {
+      gui.style.display = "flex";
       pauseMenu.style.display = "none";
       setTimeout(() => {
          animate();
