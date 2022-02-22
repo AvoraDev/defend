@@ -81,13 +81,14 @@ let particles = [];
 const round = {
   increase: 0,
   spawnRate: {initial: 2000, currently: 0},
+  multiplier: 0.85,
   counter: 1,
   begin: function() {
       this.spawnRate.currently = this.spawnRate.initial;
       this.counter = 1;
       this.increase = setInterval(() => {
          if (this.spawnRate.currently !== 0 && (this.spawnRate.currently * 0.95) !== 0) {
-            this.spawnRate.currently *= 0.95;
+            this.spawnRate.currently *= this.multiplier;
             clearInterval(enemySpawnId);
             spawnEnemies();
             
