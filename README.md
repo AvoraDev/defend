@@ -6,7 +6,6 @@ Since the game is still in alpha, there are bound to be bugs. This is where you 
 go to the "Report Bugs/Give Feedback" option on the main menu
 ___
 # Libraries
-- [Tailwind CSS](tailwindcss.com)
 - [Howler.js](howlerjs.com)
 ___
 # Other
