@@ -2,7 +2,7 @@ body {
    margin: 0;
    background-color: black;
    font-family: Arial;
-   /*overflow: hidden; commit this later*/
+   overflow: hidden;
 }
 
 .generalMenu {
@@ -24,6 +24,10 @@ body {
 
 .title {
    font-size: 25px;
+   font-weight: bold;
+}
+
+.bold {
    font-weight: bold;
 }
 
@@ -57,10 +61,11 @@ body {
    padding: 10px 45px;
    width: 100%;
    background-color: rgb(255, 0, 80);
-   font-size: small;
+   font-size: 15px;
    color: white;
    -moz-border-radius: 30px;
    -webkit-border-radius: 30px;
+   border: none;
    border-radius: 30px;
 }
 
@@ -71,8 +76,9 @@ body {
 .gui {
    position: fixed;
    display: flex;
+   min-width: 125px;
    margin: 20px;
-   padding: 10px;
+   padding: 5px 10px;
    background-color: rgba(65,65,65,0.45);
    font-size: 15px;
    color: white;
@@ -101,15 +107,30 @@ body {
    color: rgb(210, 0, 40);
 }
 
+.txtButton.back {
+   font-size: 15px;
+   margin-top: 25px;
+}
+
 #gameVersion {
    position: fixed;
    display: flex;
-   bottom: 0; right: 0;
+   bottom: 0;
    width: 100%;
-   padding: 20px;
+   margin: 10px 0;
+   padding-left: 30px;
+   font-size: small;
    color: white;
    webkit-user-select: none;
    user-select: none;
+}
+
+#scoreLogWrapper {
+   width: 200px;
+   height: 400px;
+   overflow: auto;
+   padding: 5px;
+   border: 2px solid white;
 }
 
 #feedbackMenu { /*same as gameMenu, but i dont want to use it*/
