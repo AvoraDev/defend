@@ -31,6 +31,10 @@ body {
    font-weight: bold;
 }
 
+.italic {
+   font-style: italic;
+}
+
 .gameMenu {
    position: fixed;
    overflow: auto;
