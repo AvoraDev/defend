@@ -70,20 +70,20 @@
    <!--main menu-->
    <div class="generalMenu" id="mainMenu">
       <div>
-         <img src="./images/favicon.png" alt="icon" width="85" height="85" style="margin-bottom: 25px"> <br>
-         <p class="title">Defend! (Beta)</p> <br> <!--remember to change-->
+         <img src="./images/favicon.png" alt="icon" width="85" height="85">
+         <p class="title">Defend! (Beta)</p> <!--remember to change-->
          
-         <p class="txtButton" onclick="init()">Start Game</p> <br>
+         <p class="txtButton" onclick="init()">Start Game</p>
          
-         <p class="txtButton" onclick="menuToggle('howToMenu')">How to Play</p> <br>
+         <p class="txtButton" onclick="menuToggle('howToMenu')">How to Play</p>
          
-         <p class="txtButton" onclick="menuToggle('customizeMenu')">Customize Game</p> <br>
+         <p class="txtButton" onclick="menuToggle('customizeMenu')">Customize Game</p>
          
-         <p class="txtButton" onclick="menuToggle('scoreMenu'); scoreLog()">Scores</p> <br>
+         <p class="txtButton" onclick="menuToggle('scoreMenu'); scoreLog()">Scores</p>
          
-         <p class="txtButton" onclick="menuToggle('feedbackMenu')">Give Feedback</p> <br>
+         <p class="txtButton" onclick="menuToggle('feedbackMenu')">Give Feedback</p>
          
-         <p class="txtButton" onclick="menuToggle('settingsMenu')">Settings</p> <br>
+         <p class="txtButton" onclick="menuToggle('settingsMenu')">Settings</p>
          
          <p class="txtButton" onclick="menuToggle('creditsMenu')">Credits</p>
       </div>
@@ -91,7 +91,7 @@
       <!--game version-->
       <div id="gameVersion">
          <div>
-            <p>v0.3.4-beta</p> <!--remember to change-->
+            <p>v0.3.5-beta</p> <!--remember to change-->
             <p>Source Code: <a class="txtButton" target="_blank" href="https://github.com/avoRaDev/defend">avoRaDev/defend</a></p>
          </div>
       </div>
@@ -99,30 +99,31 @@
       <!--how to play menu-->
       <div class="generalMenu" id="howToMenu">
          <div>
-            <p class="title">How to Play</p> <br>
+            <p class="title">How to Play</p>
             
-            <p class="bold">Survive as long as you can!<br>Shoot enemies and try to get a high score!</p> <br>
+            <p class="bold">Survive as long as you can!</p>
+            <p>Shoot enemies and try to get a high score!</p> <br>
             
-            <p><span class="bold" style="color: rgb(255, 0, 80)">Click</span> to shoot</p> <br>
+            <p><span class="bold" style="color: rgb(255, 0, 80)">Click</span> to shoot</p>
             
-            <p><span class="bold" style="color: rgb(255, 0, 80)">'P'</span> to pause</p> <br>
+            <p><span class="bold" style="color: rgb(255, 0, 80)">'P'</span> to pause</p>
             
-            <p class="txtButton back" onclick="menuToggle('howToMenu')">Go Back</p>
+            <br> <p class="txtButton back" onclick="menuToggle('howToMenu')">Go Back</p>
          </div>
       </div>
       
       <!--score menu-->
       <div class="generalMenu" id="scoreMenu">
          <div>
-            <p class="title">Scores</p> <br>
+            <p class="title">Scores</p>
             
             <div id="scoreLogWrapper">
-               <p id="scoreLog">---</p> <br>
+               <p id="scoreLog">---</p>
             </div>
             
-            <p class="txtButton back" onclick="localStorage.removeItem('score'); document.getElementById('scoreLog').innerHTML = '---'">Delete Scores</p> <br>
+            <p class="txtButton back" onclick="localStorage.removeItem('score'); document.getElementById('scoreLog').innerHTML = '---'">Delete Scores</p>
             
-            <p class="txtButton back" onclick="menuToggle('scoreMenu')">Go Back</p>
+            <br> <p class="txtButton back" onclick="menuToggle('scoreMenu')">Go Back</p>
          </div>
       </div>
       
@@ -132,24 +133,24 @@
             <p class="title">Customize Game</p>
             
             <p>Player Color</p>
-            <p class="txtButton" onclick="settingsToggle('playerColorCustomize')" id="playerColorCustomize">White</p> <br>
+            <p class="txtButton" onclick="settingsToggle('playerColorCustomize')" id="playerColorCustomize">White</p>
             
             <p>Cannon Color</p>
-            <p class="txtButton" onclick="settingsToggle('cannonColorCustomize')" id="cannonColorCustomize">Yellow</p> <br>
+            <p class="txtButton" onclick="settingsToggle('cannonColorCustomize')" id="cannonColorCustomize">Yellow</p>
             
             <p>Projectile Colors</p>
-            <p class="txtButton" onclick="settingsToggle('projectileColorCustomize')" id="projectileColorCustomize">White/White</p> <br>
+            <p class="txtButton" onclick="settingsToggle('projectileColorCustomize')" id="projectileColorCustomize">White/White</p>
             
             <p>Hit Points (HP)</p>
-            <p class="txtButton" onclick="settingsToggle('hpCustomize')" id="hpCustomize">3</p> <br>
+            <p class="txtButton" onclick="settingsToggle('hpCustomize')" id="hpCustomize">3</p>
             
             <p>Shots per volley</p>
-            <p class="txtButton" onclick="settingsToggle('volleyCustomize')" id="volleyCustomize">1</p> <br>
+            <p class="txtButton" onclick="settingsToggle('volleyCustomize')" id="volleyCustomize">1</p>
             
             <p>Round Multiplier</p>
-            <p class="txtButton" onclick="settingsToggle('roundCustomize')" id="roundCustomize">0.90</p> <br>
+            <p class="txtButton" onclick="settingsToggle('roundCustomize')" id="roundCustomize">0.90</p>
             
-            <p class="txtButton back" onclick="menuToggle('customizeMenu')">Go Back</p> <br>
+            <br> <p class="txtButton back" onclick="menuToggle('customizeMenu')">Go Back</p>
          </div>
       </div>
       
@@ -169,29 +170,29 @@
       <!--settings menu-->
       <div class="generalMenu" id="settingsMenu">
          <div>
-            <p class="title">Settings</p> <br>
+            <p class="title">Settings</p>
             
             <p>Trailing</p>
-            <p class="txtButton" onclick="settingsToggle('trailingSetting')" id="trailingSetting">On</p> <br>
+            <p class="txtButton" onclick="settingsToggle('trailingSetting')" id="trailingSetting">On</p>
             
             <p>Particles</p>
-            <p class="txtButton" onclick="settingsToggle('particlesSetting')" id="particlesSetting">On</p> <br>
+            <p class="txtButton" onclick="settingsToggle('particlesSetting')" id="particlesSetting">On</p>
             
-            <p class="txtButton back" onclick="menuToggle('settingsMenu')">Go Back</p>
+            <br> <p class="txtButton back" onclick="menuToggle('settingsMenu')">Go Back</p>
          </div>
       </div>
       
       <!--credits menu-->
       <div class="generalMenu" id="creditsMenu">
          <div>
-            <p class="title">Credits</p> <br>
+            <p class="title">Credits</p>
             
             <p class="bold"><a class="txtButton" href="https://github.com/avoRaDev">avoRaDev</a></p>
-            <p style="color: rgb(125,125,125)">Developer</p> <br>
+            <p class="italic" style="color: rgb(125,125,125)">Developer</p>
             
-            <p class="bold">Special Thanks to Chris Courses and <a class="txtButton" href="https://www.youtube.com/watch?v=eI9idPTT0c4" target="_blank">his video</a></p> <br>
+            <br> <p class="italic">Special Thanks to Chris Courses and <a class="txtButton" href="https://www.youtube.com/watch?v=eI9idPTT0c4" target="_blank">his video</a></p>
             
-            <p class="txtButton back" onclick="menuToggle('creditsMenu')">Go Back</p>
+            <br> <p class="txtButton back" onclick="menuToggle('creditsMenu')">Go Back</p>
          </div>
       </div>
    </div>
