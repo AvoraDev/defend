@@ -12,3 +12,4 @@ ___
 ## Other
 - This game was made using HTML, JavaScript, and CSS with the intent of learning more about game development.
 - Updates will take time. I’m not very fast when it comes to coding.
+___
